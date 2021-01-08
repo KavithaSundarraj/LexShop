@@ -21,7 +21,7 @@ namespace LexShop.DataAccess.InMemory
             }
         }
 
-        public void commit()
+        public void Commit()
         {
             cache["products"] = products;
         }
