@@ -15,6 +15,7 @@ namespace LexShop.DataAccess.InMemory
 
         public ProductRepository()
         {
+            products = cache["Products"] as List<Product>;
             if(products==null)
             {
                 products = new List<Product>();
