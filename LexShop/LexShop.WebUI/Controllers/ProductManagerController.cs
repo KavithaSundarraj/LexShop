@@ -11,12 +11,14 @@ namespace LexShop.WebUI.Controllers
 {
     public class ProductManagerController : Controller
     {
-        ProductRepository context;
-        ProductCatogoryRepository ProductCategories;
+        //ProductRepository context;
+        InMemoryRepository<Product> context;
+        //ProductCatogoryRepository ProductCategories;
+        InMemoryRepository<ProductCategory> ProductCategories;
         public ProductManagerController()
         {
-            context = new ProductRepository();
-            ProductCategories = new ProductCatogoryRepository();
+            context = new InMemoryRepository<Product>();
+            ProductCategories = new InMemoryRepository<ProductCategory>();
         }
         // GET: ProductManager
         public ActionResult Index()
@@ -43,7 +45,7 @@ namespace LexShop.WebUI.Controllers
             else
             {
                 context.Insert(product);
-                context.Commit();
+                context.commit();
                 return RedirectToAction("Index");
 
             }
@@ -86,7 +88,7 @@ namespace LexShop.WebUI.Controllers
                 productToEdit.Name = product.Name;
                 productToEdit.Price = product.Price;
 
-                context.Commit();
+                context.commit();
                 return RedirectToAction("Index");
 
             }
@@ -116,7 +118,7 @@ namespace LexShop.WebUI.Controllers
             else
             {
                 context.Delete(Id);
-                context.Commit();
+                context.commit();
                 return RedirectToAction("Index");
             }
         }
