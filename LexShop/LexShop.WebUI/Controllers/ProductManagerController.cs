@@ -7,6 +7,7 @@ using LexShop.Core.Models;
 using LexShop.DataAccess.InMemory;
 using LexShop.Core.ViewModels;
 using LexShop.Core.Contracts;
+using System.IO;
 
 namespace LexShop.WebUI.Controllers
 {
@@ -42,7 +43,7 @@ namespace LexShop.WebUI.Controllers
         }
         [HttpPost]
         
-        public ActionResult Create(Product product)
+        public ActionResult Create(Product product,HttpPostedFileBase file)
         {
             if(ModelState.IsValid)
             {
@@ -50,6 +51,11 @@ namespace LexShop.WebUI.Controllers
             }
             else
             {
+                if(file!=null)
+                {
+                    product.Image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//")+product.Image);
+                }
                 context.Insert(product);
                 context.commit();
                 return RedirectToAction("Index");
@@ -74,7 +80,7 @@ namespace LexShop.WebUI.Controllers
         }
         [HttpPost]
 
-        public ActionResult Edit(Product product, string Id)
+        public ActionResult Edit(Product product, string Id, HttpPostedFileBase file)
         {
             Product productToEdit = context.Find(Id);
 
@@ -88,9 +94,16 @@ namespace LexShop.WebUI.Controllers
                 {
                     return View(product);
                 }
+
+                if(file!=null)
+                {
+                    product.Image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//") + productToEdit.Image);
+                }
                 productToEdit.Category = product.Category;
                 productToEdit.Description = product.Description;
-                productToEdit.image = product.image;
+                //productToEdit.image = product.image;
+                
                 productToEdit.Name = product.Name;
                 productToEdit.Price = product.Price;
 
